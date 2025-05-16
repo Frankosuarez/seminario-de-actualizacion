@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+    const MAX_USUARIOS = 20;
+    const MAX_PRODUCTOS = 10;
+
+    let contadorUsuarios = 4;
+    let contadorProductos = 3;
+
+    const usuarios = [
+      { id: 1, Nombre: "franko", Contraseña: "Franko12#", Categoria: "Administrador" },
+      { id: 2, Nombre: "tomas", Contraseña: "Tomass12#", Categoria: "Cliente" },
+      { id: 3, Nombre: "jose", Contraseña: "Josenose12#", Categoria: "Vendedor" },
+      { id: 4, Nombre: "rodolfo", Contraseña: "Rodolfo12#", Categoria: "Deposito" },
+    ];
+
+    const productos = [
+      { id: 1, Nombre: "Lavandinax1L", Precio: 875.25, Stock: 3000 },
+      { id: 4, Nombre: "Detergentex500ml", Precio: 1102.45, Stock: 2010 },
+      { id: 22, Nombre: "Jabon en polvo x250g", Precio: 650.22, Stock: 407 },
+    ];
+
+    function esMayuscula(c) {
+      return c >= 'A' && c <= 'Z';
+    }
+
+    function esSimboloEspecial(c) {
+      return "!@#$%^&*()-_+=<>?/".includes(c);
+    }
+
+    function validarContrasena(contrasena) {
+      let tieneMayuscula = false;
+      let tieneSimbolo = false;
+      let cantidad = contrasena.length > 8 && contrasena.length < 16;
+
+      for (let c of contrasena) {
+        if (esMayuscula(c)) tieneMayuscula = true;
+        if (esSimboloEspecial(c)) tieneSimbolo = true;
+      }
+
+      return tieneMayuscula && tieneSimbolo && cantidad;
+    }
+
+    function crearUsuario() {
+      let nombre = prompt("Ingrese nombre de usuario:");
+      let contraseña = prompt("Ingrese contraseña:");
+      let categoria = "Cliente";
+
+      if (validarContrasena(contraseña)) {
+        usuarios[contadorUsuarios++] = { id: contadorUsuarios, Nombre: nombre, Contraseña: contraseña, Categoria: categoria };
+        console.log(" Usuario creado correctamente.");
+      } else {
+        console.log(" La contraseña debe tener al menos 1 mayúscula, 1 símbolo especial y entre 8 y 16 caracteres.");
+      }
+    }
+
+    function CambiarContraseña(){
+    let id = parseInt(prompt("Ingrese el ID del usuario para cambiar la contraseña:"));
+    let usuario = usuarios.find(u => u.id === id);
+
+    if (!usuario) {
+        console.log("Usuario no encontrado.");
+        return;
+    }
+
+    let nuevaContrasena = prompt(`Ingrese la nueva contraseña para ${usuario.Nombre}:`);
+
+    if (validarContrasena(nuevaContrasena)) {
+        usuario.Contraseña = nuevaContrasena;
+        console.log("Contraseña actualizada correctamente.");
+    } else {
+        console.log("La nueva contraseña no cumple los requisitos:");
+        console.log("- Al menos una letra mayúscula");
+        console.log("- Al menos un símbolo especial (!@#$%^&*()-_+=<>?/)");
+        console.log("- Entre 8 y 16 caracteres");
+     }
+    }
+    function listarProductos() {
+      console.log("Lista de productos:");
+      for (let p of productos) {
+        console.log(`ID: ${p.id} | ${p.Nombre} | Precio: $${p.Precio} | Stock: ${p.Stock}`);
+      }
+    }
+
+    function comprarProducto() {
+      listarProductos();
+      let id = parseInt(prompt("Ingrese el ID del producto a comprar:"));
+      let producto = productos.find(p => p.id === id);
+      if (producto) {
+        if (producto.Stock > 0) {
+          producto.Stock--;
+          console.log(` Compraste: ${producto.Nombre}\nStock restante: ${producto.Stock}`);
+        } else {
+          console.log(" No hay stock disponible.");
+        }
+      } else {
+        console.log(" Producto no encontrado.");
+      }
+    }
+
+    function crearProducto() {
+      if (contadorProductos >= MAX_PRODUCTOS) {
+        console.log(" No se pueden agregar más productos.");
+        return;
+      }
+
+      let id = parseInt(prompt("ID del producto:"));
+      let nombre = prompt("Nombre del producto:");
+      let precio = parseFloat(prompt("Precio del producto:"));
+      let stock = parseInt(prompt("Cantidad en stock:"));
+
+      productos[contadorProductos++] = { id, Nombre: nombre, Precio: precio, Stock: stock };
+      console.log(" Producto agregado correctamente.");
+    }
+
+    function modificarProducto() {
+      let id = parseInt(prompt("ID del producto a modificar:"));
+      let producto = productos.find(p => p.id === id);
+      if (producto) {
+        producto.Nombre = prompt("Nuevo nombre:");
+        producto.Precio = parseFloat(prompt("Nuevo precio:"));
+        producto.Stock = parseInt(prompt("Nuevo stock:"));
+        console.log(" Producto modificado correctamente.");
+      } else {
+        console.log(" Producto no encontrado.");
+      }
+    }
+
+    function eliminarProducto() {
+      let id = parseInt(prompt("ID del producto a eliminar:"));
+      let index = productos.findIndex(p => p.id === id);
+      if (index !== -1) {
+        productos.splice(index, 1);
+        contadorProductos--;
+        console.log(" Producto eliminado.");
+      } else {
+        console.log(" Producto no encontrado.");
+      }
+    }
+
+    function menuProductos() {
+      let opcion;
+      do {
+        opcion = prompt(
+          "Menú de Productos:\n1. Listar\n2. Crear\n3. Modificar\n4. Eliminar\n5. Comprar\n6. Salir"
+        );
+        switch (opcion) {
+          case "1": listarProductos(); break;
+          case "2": crearProducto(); break;
+          case "3": modificarProducto(); break;
+          case "4": eliminarProducto(); break;
+          case "5": comprarProducto(); break;
+        }
+      } while (opcion !== "6");
+    }
+
+    function MenuSistema(){
+    console.log("--Menu del sistema");
+    console.log("1.Cambiar de contraseña");
+    console.log("2.Gestionar Productos");
+    let opcion = prompt("opcion:");
+    if(opcion === "1"){
+      CambiarContraseña();
+
+    }else if(opcion === "2"){
+      menuProductos();
+
+    }else{
+      console.log("opcion invalida");
+    }
+    }
+
+    function iniciarLogin() {
+      let intentos = 3;
+      while (intentos > 0) {
+        let contraseña = prompt("Ingrese su contraseña:");
+        let usuario = usuarios.find(u => u.Contraseña === contraseña);
+        if (usuario) {
+          console.log(` Bienvenido ${usuario.Nombre} (${usuario.Categoria})`);
+          MenuSistema();
+  
+        } else {
+          console.log(" Contraseña incorrecta.");
+          intentos--;
+        }
+      }
+      console.log(" Usuario bloqueado por intentos fallidos.");
+    }
+
+    console.log("--Login");
+    console.log("1.Ingresar al sistema");
+    console.log("2.Crear Usuario");
+    let opcion = prompt("opcion:");
+    if(opcion === "1"){
+      iniciarLogin();
+
+    }else if(opcion === "2"){
+      crearUsuario();
+
+    }else{
+      console.log("opcion invalida");
+    }
+  </script>
+</body>
+</html>

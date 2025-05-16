@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+    const MAX_USUARIOS = 20;
+    let contadorUsuarios = 4;
+
+    const usuarios = [
+      { id: 1, Nombre: "franko", Contraseña: "Franko12#"},
+      { id: 2, Nombre: "tomas", Contraseña: "Tomass12#"},
+      { id: 3, Nombre: "jose", Contraseña: "Josenose12#"},
+      { id: 4, Nombre: "rodolfo", Contraseña: "Rodolfo12#"},
+    ];
+
+    function esMayuscula(c) {
+      return c >= 'A' && c <= 'Z';
+    }
+
+    function esSimboloEspecial(c) {
+      return "!@#$%^&*()-_+=<>?/".includes(c);
+    }
+
+    function validarContrasena(contrasena) {
+      let tieneMayuscula = false;
+      let tieneSimbolo = false;
+      let cantidad = contrasena.length > 8 && contrasena.length < 16;
+
+      for (let c of contrasena) {
+        if (esMayuscula(c)) tieneMayuscula = true;
+        if (esSimboloEspecial(c)) tieneSimbolo = true;
+      }
+
+      return tieneMayuscula && tieneSimbolo && cantidad;
+    }
+
+    function crearUsuario() {
+      let nombre = prompt("Ingrese nombre de usuario:");
+      let contraseña = prompt("Ingrese contraseña:");
+
+      if (validarContrasena(contraseña)) {
+        usuarios[contadorUsuarios++] = { id: contadorUsuarios, Nombre: nombre, Contraseña: contraseña };
+        console.log(" Usuario creado correctamente.");
+      } else {
+        console.log(" La contraseña debe tener al menos 1 mayúscula, 1 símbolo especial y entre 8 y 16 caracteres.");
+      }
+    }
+
+    function CambiarContraseña(){
+    let id = parseInt(prompt("Ingrese el ID del usuario para cambiar la contraseña:"));
+    let usuario = usuarios.find(u => u.id === id);
+
+    if (!usuario) {
+        console.log("Usuario no encontrado.");
+        return;
+    }
+
+    let nuevaContrasena = prompt(`Ingrese la nueva contraseña para ${usuario.Nombre}:`);
+
+    if (validarContrasena(nuevaContrasena)) {
+        usuario.Contraseña = nuevaContrasena;
+        console.log("Contraseña actualizada correctamente.");
+    } else {
+        console.log("La nueva contraseña no cumple los requisitos:");
+        console.log("- Al menos una letra mayúscula");
+        console.log("- Al menos un símbolo especial (!@#$%^&*()-_+=<>?/)");
+        console.log("- Entre 8 y 16 caracteres");
+     }
+    }
+
+    function MenuSistema(){
+    console.log("--Menu del sistema");
+    console.log("1.Cambiar de contraseña");
+    console.log("2.Salir");
+    let opcion = prompt("opcion:");
+    if(opcion === "1"){
+      CambiarContraseña();
+
+    }else if(opcion === "2"){
+      console.log("Adios..");
+
+    }else{
+      console.log("opcion invalida");
+    }
+    }
+
+    function iniciarLogin() {
+      let intentos = 3;
+      while (intentos > 0) {
+        let contraseña = prompt("Ingrese su contraseña:");
+        let usuario = usuarios.find(u => u.Contraseña === contraseña);
+        if (usuario) {
+          console.log(` Bienvenido ${usuario.Nombre}`);
+          MenuSistema();
+  
+        } else {
+          console.log(" Contraseña incorrecta.");
+          intentos--;
+        }
+      }
+      console.log(" Usuario bloqueado por intentos fallidos.");
+    }
+
+    console.log("--Login");
+    console.log("1.Ingresar al sistema");
+    console.log("2.Crear Usuario");
+    let opcion = prompt("opcion:");
+    if(opcion === "1"){
+      iniciarLogin();
+
+    }else if(opcion === "2"){
+      crearUsuario();
+
+    }else{
+      console.log("opcion invalida");
+    }
+  </script>
+</body>
+</html>

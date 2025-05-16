@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+    const MAX_USUARIOS = 20;
+    let contadorUsuarios = 4;
+
+    const usuarios = [
+      { id: 1, Nombre: "franko", Contraseña: "Franko12#"},
+      { id: 2, Nombre: "tomas", Contraseña: "Tomass12#"},
+      { id: 3, Nombre: "jose", Contraseña: "Josenose12#"},
+      { id: 4, Nombre: "rodolfo", Contraseña: "Rodolfo12#"},
+    ];
+
+    function MenuSistema(){
+    console.log("--Menu del sistema");
+    console.log("Bienvenido...");
+    }
+
+    function iniciarLogin() {
+      let intentos = 3;
+      while (intentos > 0) {
+        let contraseña = prompt("Ingrese su contraseña:");
+        let usuario = usuarios.find(u => u.Contraseña === contraseña);
+        if (usuario) {
+          console.log(` Bienvenido ${usuario.Nombre}`);
+          MenuSistema();
+  
+        } else {
+          console.log(" Contraseña incorrecta.");
+          intentos--;
+        }
+      }
+      console.log(" Usuario bloqueado por intentos fallidos.");
+    }
+
+
+    iniciarLogin();
+
+  </script>
+</body>
+</html>
