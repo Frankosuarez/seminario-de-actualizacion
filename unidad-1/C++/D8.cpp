@@ -46,7 +46,6 @@ void CrearProducto(Producto productos[]) {
     return;
 }
 
-
 void ListarProductos(const Producto productos[]) {
     if (contadorProductos == 0) {
         cout << "No hay productos registrados.\n";
