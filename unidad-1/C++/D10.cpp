@@ -109,7 +109,6 @@ void ModificarProducto(Producto productos[], int id) {
     cout << "Producto con ID " << id << " no encontrado.\n";
 }
 
-
 void EliminarProducto(Producto productos[], int id) {
     for (int i = 0; i < contadorProductos; i++) {
         if (productos[i].id == id) {
