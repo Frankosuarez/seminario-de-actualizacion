@@ -50,8 +50,6 @@ void MenuCliente(Producto productos[]){
 
 }
 
-
-
 void CrearProducto(Producto productos[]) {
     if (contadorProductos >= MAX_PRODUCTOS) {
         cout << "No se pueden agregar más productos. Stock lleno.\n";
