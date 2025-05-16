@@ -62,7 +62,7 @@ void CrearProducto(Producto productos[]) {
     cout << "Introduzca el ID del producto: ";
     cin >> nuevoProducto.id;
     cout << "Introduzca el nombre del producto: ";
-    cin.ignore(); // Limpia el buffer
+    cin.ignore();
     getline(cin, nuevoProducto.Nombre);
     cout << "Introduzca el precio del producto: ";
     cin >> nuevoProducto.Precio;
@@ -114,9 +114,9 @@ void EliminarProducto(Producto productos[], int id) {
     for (int i = 0; i < contadorProductos; i++) {
         if (productos[i].id == id) {
             for (int j = i; j < contadorProductos - 1; j++) {
-                productos[j] = productos[j + 1]; // Mueve los productos hacia arriba
+                productos[j] = productos[j + 1]; 
             }
-            contadorProductos--; // Reduce la cantidad de productos
+            contadorProductos--; 
             cout << "Producto eliminado correctamente.\n";
             return;
         }
