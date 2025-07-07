@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<script>
+
+class Usuario {
+  constructor(id, nombre, contraseña, categoria) {
+    this.id = id;
+    this.Nombre = nombre;
+    this.Contraseña = contraseña;
+    this.Categoria = categoria;
+  }
+
+
+esMayuscula(c) {
+      return c >= 'A' && c <= 'Z';
+    }
+
+esSimboloEspecial(c) {
+      return "!@#$%^&*()-_+=<>?/".includes(c);
+    }
+
+validarContraseña(contraseña) {
+      let tieneMayuscula = false;
+      let tieneSimbolo = false;
+      let cantidad = contraseña.length >= 8 && contraseña.length <= 16;
+
+      for (let c of contraseña) {
+        if (this.esMayuscula(c)) tieneMayuscula = true;
+        if (this.esSimboloEspecial(c)) tieneSimbolo = true;
+      }
+
+      return tieneMayuscula && tieneSimbolo && cantidad;
+    }
+
+ cambiarContraseña(nuevaContraseña) {
+    if (this.validarContraseña(nuevaContraseña)) {
+      this.Contraseña = nuevaContraseña;
+      console.log("Contraseña actualizada correctamente.");
+    } else {
+      console.log("La nueva contraseña no cumple los requisitos.");
+    }
+  }
+
+  modificarUsuario(nombre, contraseña, categoria) {
+    this.Nombre = nombre;
+    if (this.validarContraseña(contraseña)) {
+      this.Contraseña = contraseña;
+    }
+    this.Categoria = categoria;
+  }
+
+}
+
+class Producto{
+    constructor(id, nombre, precio, stock){
+        this.id = id;
+        this.Nombre = nombre;
+        this.Precio = precio;
+        this.Stock = stock;
+    }
+
+imprimirDatos() {
+    console.log(`ID: ${this.id} | Nombre: ${this.Nombre} | Precio: $${this.Precio} | Stock: ${this.Stock}`);
+    }
+
+comprarProducto() {
+        if (this.Stock > 0) {
+          this.Stock--;
+          console.log(` Compraste: ${this.Nombre}\nStock restante: ${this.Stock}`);
+        } else {
+          console.log(" No hay stock disponible.");
+        }
+      } 
+
+modificarProducto(nuevoNombre, nuevoPrecio, nuevoStock) {
+    this.Nombre = nuevoNombre;
+    this.Precio = nuevoPrecio;
+    this.Stock = nuevoStock;
+    console.log(" Producto modificado correctamente.");
+    }
+
+}
+
+class AppModel{
+    constructor(usuarios, productos){
+        this.usuarios = usuarios;
+        this.productos = productos;
+    }
+
+    listarProductos(){
+    for(let i = 0; i < this.productos.length ; i++){
+      this.productos[i].imprimirDatos();
+    }
+  }
+
+  agregarProducto(nombre, precio, stock){
+    let nuevoProducto = new Producto(this.productos.length, nombre, precio, stock);
+    this.productos.push(nuevoProducto);
+    localStorage.setItem("productos", JSON.stringify(this.productos));
+  }
+
+  agregarUsuario(nombre, contraseña, categoria){
+    let nuevoUsuario = new Usuario(this.usuarios.length, nombre, contraseña, categoria)
+    if(nuevoUsuario.validarContraseña(contraseña)){
+        this.usuarios.push(nuevoUsuario);
+        localStorage.setItem("usuarios", JSON.stringify(this.usuarios));
+
+        }else {
+          console.log("contraseña invalida...");
+        }
+  }
+
+}
+
+class App{
+  constructor(appModel){
+    this.appModel = appModel;
+  }
+
+    menuProductos() {
+      let opcion;
+      do {
+        opcion = prompt(
+          "Menú de Productos:\n1. Listar\n2. Crear\n3. Modificar\n4. Eliminar\n5. Comprar\n6. Salir"
+        );
+        switch (opcion) {
+          case "1": this.appModel.listarProductos(); break;
+
+          case "2":
+            let nombre = prompt("Nombre del producto:");
+            let precio = parseFloat(prompt("Precio del producto:"));
+            let stock = parseInt(prompt("Cantidad en stock:")); 
+            
+           this.appModel.agregarProducto(nombre, precio, stock);
+
+          break;
+
+          case "3":
+            let id3 = parseInt(prompt("ID del producto a modificar:"));
+                for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id3){
+
+                        let nuevoNombre = prompt("Nuevo nombre:");
+                        let nuevoPrecio = parseFloat(prompt("Nuevo precio:"));
+                        let nuevoStock = parseInt(prompt("Nuevo stock:")); 
+                        this.appModel.productos[i].modificarProducto(nuevoNombre, nuevoPrecio, nuevoStock);
+                        break; 
+
+                    }
+            }
+        
+          break;
+
+          case "4":
+            let id4 = parseInt(prompt("ID del producto a eliminar:"));
+            for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id4){
+
+                        this.appModel.productos.splice(i, 1); 
+                        break;
+
+                    }
+            }
+
+          break;
+
+          case "5":
+            this.appModel.listarProductos();
+            let id5 = parseInt(prompt("Ingrese el ID del producto a comprar:")); 
+            for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id5){
+
+                        this.appModel.productos[i].comprarProducto(); 
+                        break;
+
+                    }
+            }
+          break;
+        }
+      } while (opcion !== "6");
+    }
+
+    menuCliente() {
+      let opcion;
+      do {
+        opcion = prompt("Menú Cliente:\n1. Comprar producto\n2. Salir");
+        if (opcion === "1"){ 
+            this.appModel.listarProductos();
+            let id = parseInt(prompt("Ingrese el ID del producto a comprar:")); 
+            for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id){
+
+                        this.appModel.productos[i].comprarProducto(); 
+                        break;
+
+                    }
+              }
+        }
+
+      } while (opcion !== "2");
+    }
+
+     menuAdmin() {
+      let opcion;
+      do {
+        opcion = prompt(
+          "Menú de Productos:\n1. Listar\n2. Crear\n3. Modificar\n4. Eliminar\n5. Modificar usuario\n6. Salir"
+        );
+        switch (opcion) {
+          case "1": this.appModel.listarProductos(); break;
+
+          case "2":
+            let nombre = prompt("Nombre del producto:");
+            let precio = parseFloat(prompt("Precio del producto:"));
+            let stock = parseInt(prompt("Cantidad en stock:")); 
+            
+           this.appModel.agregarProducto(nombre, precio, stock);
+
+          break;
+
+          case "3":
+            let id3 = parseInt(prompt("ID del producto a modificar:"));
+                for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id3){
+
+                        let nuevoNombre = prompt("Nuevo nombre:");
+                        let nuevoPrecio = parseFloat(prompt("Nuevo precio:"));
+                        let nuevoStock = parseInt(prompt("Nuevo stock:")); 
+                        this.appModel.productos[i].modificarProducto(nuevoNombre, nuevoPrecio, nuevoStock); 
+                        break;
+
+                    }
+            }
+        
+          break;
+
+          case "4":
+            let id4 = parseInt(prompt("ID del producto a eliminar:"));
+            for(let i = 0; i < this.appModel.productos.length; i++){
+                    if(this.appModel.productos[i].id == id4){
+
+                        this.appModel.productos.splice(i, 1); 
+                        break;
+
+                    }
+            }
+
+          break;
+
+          case "5":
+            let id5 = parseInt(prompt("Ingrese el ID del usuario a modificar:"));
+            let nuevoNombre = prompt(`Ingrese su nuevo Nombre `);
+            let nuevaContraseña = prompt(`Ingrese su nueva Contraseña `);
+            let nuevaCategoria = prompt(`Ingrese su nueva Categoría `);
+            
+            for(let i = 0; i < this.appModel.usuarios.length; i++){
+              if(id5 == this.appModel.usuarios[i].id){
+                this.appModel.usuarios[i].modificarUsuario(nuevoNombre, nuevaContraseña, nuevaCategoria);
+                break;
+              }
+            }
+          break;
+        }
+      } while (opcion !== "6");
+    }
+
+    MenuSistema(usuario){
+    console.log("--Menu del sistema");
+    console.log("1.Cambiar de contraseña");
+    console.log("2.Gestionar Productos");
+    let opcion = prompt("opcion:");
+    if(opcion === "1"){
+        let nuevaContraseña = prompt(`Ingrese la nueva contraseña`);
+        usuario.cambiarContraseña(nuevaContraseña);
+
+    }else if(opcion === "2"){
+      if (usuario.Categoria === "Cliente"){ this.menuCliente();return;}
+      if(usuario.Categoria === "Administrador"){ this.menuAdmin();return;};
+      if(usuario.Categoria === "Deposito"){ this.menuProductos(); return;};
+      if(usuario.Categoria === "Vendedor") { this.menuProductos();return;};
+
+    }else{
+      console.log("opcion invalida");
+    }
+    }
+
+    login(){
+    let opcion;
+    do{
+    console.log("--Login");
+    console.log("1.Ingresar al sistema");
+    console.log("2.Crear Usuario");
+    console.log("3.Salir");
+    opcion = prompt("opcion:");
+    
+    if(opcion == "1"){
+      let intentos = 3;
+      while (intentos > 0) {
+        let contraseña = prompt("Ingrese su contraseña:");
+        for(let i = 0; i < this.appModel.usuarios.length; i++){
+          if(contraseña == this.appModel.usuarios[i].Contraseña){
+            this.MenuSistema(this.appModel.usuarios[i]);
+            return;
+          }
+        }
+        console.log(" Contraseña incorrecta.");
+        --intentos;
+      }
+
+      console.log(" Usuario bloqueado por intentos fallidos.");
+
+    }else if(opcion == "2"){
+        let nombre = prompt("Ingrese nombre de usuario:");
+        let contraseña = prompt("Ingrese contraseña:");
+        let categoria = "Cliente";
+        
+        this.appModel.agregarUsuario(nombre, contraseña, categoria);
+
+    }else{
+      console.log("opcion invalida");
+    }
+
+    }while(opcion !== "3" );
+  }
+
+}
+
+
+function main() {
+
+/*--en caso de que se borre todo
+const user = new Usuario( 0, "franko", "Franko12#", "Administrador");
+const user1 = new Usuario( 1, "tomas", "Tomass12#", "Cliente");
+const user2 = new Usuario( 2, "jose", "Josenose12#", "Vendedor");
+const user3 = new Usuario( 3, "rodolfo", "Rodolfo12#", "Deposito");
+userCargados = [user,user1,user2,user3];
+
+const producto = new Producto(0, "Lavandinax1L", 875.25, 3000 );
+const producto1 = new Producto(1, "Detergentex500ml", 1102.45, 2010 );
+const producto2 = new Producto(2, "Jabon en polvo x250g", 650.22, 407 );
+productoscargados = [producto, producto1, producto2];
+
+localStorage.setItem("usuarios", JSON.stringify(userCargados));
+localStorage.setItem("productos", JSON.stringify(productoscargados));
+*/
+
+const productosData = localStorage.getItem("productos");//string
+const productosJson = JSON.parse(productosData);//json
+const productos = productosJson.map(p => new Producto(p.id, p.Nombre, p.Precio, p.Stock));//obj javascript
+
+const usuariosData = localStorage.getItem("usuarios");
+const usuariosJson = JSON.parse(usuariosData);
+const usuarios = usuariosJson.map(u => new Usuario(u.id, u.Nombre, u.Contraseña, u.Categoria));
+
+
+const appModel = new AppModel(usuarios, productos);
+const app = new App(appModel);
+  app.login();
+}
+
+window.onload = main;
+
+</script>
+
+</body>
+
+</html>
