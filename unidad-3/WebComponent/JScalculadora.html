@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+
+    class Calculadora extends HTMLElement
+    {
+        constructor()
+        {
+            super();
+
+            this.display = document.createElement('input');
+            this.btn1 = document.createElement('button');
+            this.btn2 = document.createElement('button');
+            this.btn3 = document.createElement('button');
+            this.btn4 = document.createElement('button');
+            this.btn5 = document.createElement('button');
+            this.btn6 = document.createElement('button');
+            this.btn7 = document.createElement('button');
+            this.btn8 = document.createElement('button');
+            this.btn9 = document.createElement('button');
+
+            this.btnPlus = document.createElement('button');
+            this.btnResta = document.createElement('button');
+            this.btnMultplicacion = document.createElement('button');
+            this.btnDivision = document.createElement('button');
+            this.btnPunto = document.createElement('button');
+
+            this.btnCalculate = document.createElement('button');
+
+            this.display.type = 'text';
+            this.btn1.innerText = '1';
+            this.btn2.innerText = '2';
+            this.btn3.innerText = '3';
+            this.btn4.innerText = '4';
+            this.btn5.innerText = '5';
+            this.btn6.innerText = '6';
+            this.btn7.innerText = '7';
+            this.btn8.innerText = '8';
+            this.btn9.innerText = '9';
+
+            this.btnPlus.innerText = '+';
+            this.btnResta.innerText = '-';
+            this.btnMultplicacion.innerText = '*';
+            this.btnDivision.innerText = '/';
+            this.btnPunto.innerText = '.';
+
+            this.btnCalculate.innerText = '=';
+        }
+
+        onBtnCalculateClick(event){ this.display.value = eval(this.display.value);  }
+
+        onBtn1Click(event){ this.display.value += '1';  }
+        onBtn2Click(event){ this.display.value += '2';  }
+        onBtn3Click(event){ this.display.value += '3';  }
+        onBtn4Click(event){ this.display.value += '4';  }
+        onBtn5Click(event){ this.display.value += '5';  }
+        onBtn6Click(event){ this.display.value += '6';  }
+        onBtn7Click(event){ this.display.value += '7';  }
+        onBtn8Click(event){ this.display.value += '8';  }
+        onBtn9Click(event){ this.display.value += '9';  }  
+
+        onBtnPlusClick(event){  this.display.value += '+';  }
+        onBtnRestaClick(event){ this.display.value += '-';  }
+        onBtnMultiplicacionClick(event){ this.display.value += '*';  }
+        onBtnDivisionClick(event){ this.display.value += '/';  }
+        onBtnPuntoClick(event){ this.display.value += '.';  }
+
+        connectedCallback()
+        {
+            this.appendChild(this.display);
+
+            this.appendChild(this.btn1);
+            this.appendChild(this.btn2);
+            this.appendChild(this.btn3);
+            this.appendChild(this.btn4);
+            this.appendChild(this.btn5);
+            this.appendChild(this.btn6);
+            this.appendChild(this.btn7);
+            this.appendChild(this.btn8);
+            this.appendChild(this.btn9);
+
+
+            this.appendChild(this.btnPlus);
+            this.appendChild(this.btnResta);
+            this.appendChild(this.btnMultplicacion);
+            this.appendChild(this.btnDivision);
+            this.appendChild(this.btnPunto);
+
+            this.appendChild(this.btnCalculate);
+
+            this.btnCalculate.onclick = this.onBtnCalculateClick.bind(this);
+
+            this.btn1.onclick = this.onBtn1Click.bind(this);
+            this.btn2.onclick = this.onBtn2Click.bind(this);
+            this.btn3.onclick = this.onBtn3Click.bind(this);
+            this.btn4.onclick = this.onBtn4Click.bind(this);
+            this.btn5.onclick = this.onBtn5Click.bind(this);
+            this.btn6.onclick = this.onBtn6Click.bind(this);
+            this.btn7.onclick = this.onBtn7Click.bind(this);
+            this.btn8.onclick = this.onBtn8Click.bind(this);
+            this.btn9.onclick = this.onBtn9Click.bind(this);
+
+            this.btnPlus.onclick = this.onBtnPlusClick.bind(this);
+            this.btnResta.onclick = this.onBtnRestaClick.bind(this);
+            this.btnMultplicacion.onclick = this.onBtnMultiplicacionClick.bind(this);
+            this.btnDivision.onclick = this.onBtnDivisionClick.bind(this);
+            this.btnPunto.onclick = this.onBtnPuntoClick.bind(this);
+
+        }
+
+        disconnectedCallback()
+        {
+
+        }
+    }
+
+    customElements.define('calculadora-component', Calculadora );
+
+
+    function main() {
+
+        document.body.appendChild( new Calculadora() );
+
+    }
+
+    window.onload = main;
+
+</script>
+</html>
