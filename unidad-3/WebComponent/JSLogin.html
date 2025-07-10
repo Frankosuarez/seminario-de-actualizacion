@@ -14,15 +14,93 @@
     class LoginForm extends HTMLElement {
       constructor() {
         super();
+
+        this.header = document.createElement('header');
+        this.header.className = 'w3-container w3-teal';
+        const h1 = document.createElement('h1');
+        h1.textContent = ' Login ';
+        this.header.appendChild(h1);
+
+        this.container = document.createElement('div');
+        this.container.className = 'w3-container w3-half w3-margin-top';
+
+        this.form = document.createElement('form');
+        this.form.className = 'w3-container w3-card-4';
+
+        const pName = document.createElement('p');
+        const inputName = document.createElement('input');
+        inputName.className = 'w3-input';
+        inputName.type = 'text';
+        inputName.style.width = '90%';
+        inputName.required = true;
+        const labelName = document.createElement('label');
+        labelName.textContent = 'Name';
+        pName.appendChild(inputName);
+        pName.appendChild(labelName);
+        this.form.appendChild(pName);
+
+        const pPass = document.createElement('p');
+        const inputPass = document.createElement('input');
+        inputPass.className = 'w3-input';
+        inputPass.type = 'password';
+        inputPass.style.width = '90%';
+        inputPass.required = true;
+        const labelPass = document.createElement('label');
+        labelPass.textContent = 'Password';
+        pPass.appendChild(inputPass);
+        pPass.appendChild(labelPass);
+        this.form.appendChild(pPass);
+
+        const genders = [
+          { value: 'male', label: 'Male', checked: true },
+          { value: 'female', label: 'Female' },
+          { value: '', label: "Don't know (Disabled)", disabled: true }
+        ];
+
+        genders.forEach(g => {
+          const p = document.createElement('p');
+          const radio = document.createElement('input');
+          radio.className = 'w3-radio';
+          radio.type = 'radio';
+          radio.name = 'gender';
+          radio.value = g.value;
+          if (g.checked) radio.checked = true;
+          if (g.disabled) radio.disabled = true;
+          const label = document.createElement('label');
+          label.textContent = g.label;
+          p.appendChild(radio);
+          p.appendChild(label);
+          this.form.appendChild(p);
+        });
+
+        const pStay = document.createElement('p');
+        const checkbox = document.createElement('input');
+        checkbox.className = 'w3-check';
+        checkbox.type = 'checkbox';
+        checkbox.checked = true;
+        const labelStay = document.createElement('label');
+        labelStay.textContent = 'Stay logged in';
+        pStay.appendChild(checkbox);
+        pStay.appendChild(labelStay);
+        this.form.appendChild(pStay);
+
+        const pButton = document.createElement('p');
+        const button = document.createElement('button');
+        button.className = 'w3-button w3-section w3-teal w3-ripple';
+        button.textContent = 'Log in';
+        pButton.appendChild(button);
+        this.form.appendChild(pButton);
+
+        this.container.appendChild(this.form);
       }
 
-      connectedCallback() 
-      {
-      
+      connectedCallback() {
+        this.appendChild(this.header);
+        this.appendChild(this.container);
       }
     }
 
-    customElements.define('login-form', LoginForm); //en proceso
+    customElements.define('login-form', LoginForm);
   </script>
 
 </body>
