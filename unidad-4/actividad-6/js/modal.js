@@ -1,32 +1,35 @@
-
-export class UserModal {
+ 
+ class UserModal extends HTMLElement {
   constructor() {
-    this.modal = document.createElement("div");
-    this.modal.className = "w3-modal";
-    this.modal.style.display = "none";
-    this.modal.innerHTML = `
-      <div class="w3-modal-content w3-card-4">
-        <header class="w3-container w3-teal">
-          <span id="closeModal" 
-                class="w3-button w3-display-topright">&times;</span>
-          <h2>Detalle Usuario</h2>
-        </header>
-        <div class="w3-container" id="modal-body"></div>
-        <footer class="w3-container w3-teal">
-          <p>Detalle adicional</p>
-        </footer>
-      </div>`;
-    document.body.appendChild(this.modal);
+    super();
+    this.style.display = "none";
+    this.classList.add("w3-modal");
+  }
 
-    this.modal.querySelector("#closeModal").onclick = () => this.close();
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="w3-modal-content w3-card-4 w3-animate-top" style="max-width:600px; margin:auto; top:50%; transform:translateY(-50%)">
+        <header class="w3-container w3-teal">
+          <span class="w3-button w3-display-topright">&times;</span>
+          <h2>Detalle de Usuario</h2>
+        </header>
+        <div class="w3-container modal-content"></div>
+        <footer class="w3-container w3-teal">
+          <p>Información extendida</p>
+        </footer>
+      </div>
+    `;
+    this.querySelector("span").addEventListener("click", () => this.hide());
   }
 
   show(contentHtml) {
-    this.modal.querySelector("#modal-body").innerHTML = contentHtml;
-    this.modal.style.display = "block";
+    this.querySelector(".modal-content").innerHTML = contentHtml;
+    this.style.display = "block";
   }
 
-  close() {
-    this.modal.style.display = "none";
+  hide() {
+    this.style.display = "none";
   }
 }
+
+customElements.define("user-modal", UserModal);
